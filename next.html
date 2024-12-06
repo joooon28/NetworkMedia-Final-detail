@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ㅋ ㅏ ㅊ</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Gmarket Sans", sans-serif;
+        }
+
+        /* 헤더 스타일 */
+        header {
+            background-color: #F5EFE1;
+            padding: 20px 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+        }
+        header img {
+            width: 100px;
+            height: 100px;
+        }
+
+        /* 메인 섹션 스타일 */
+        main {
+            margin-top: 140px;
+            padding: 50px;
+            background-color: #F5EFE1;
+        }
+
+        .region {
+            margin-bottom: 100px;
+        }
+
+        .region-title {
+            font-size: 3.3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .rectangles {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 50px;
+        }
+
+        .rectangle-container {
+            position: relative;
+        }
+
+        .rectangle {
+            background-color: #000;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+            text-align: center;
+            border-radius: 5px;
+            height: 700px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .rectangle-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 93.3%;
+            background-color: rgba(0, 0, 0, 0.65); /* 검은색 배경, 투명도 50% */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: 'pretendard';
+            font-size: 1.5rem;
+            font-weight: lighter;
+            text-align: center;
+            z-index: 10;
+            visibility: hidden; /* 기본적으로 숨김 처리 */
+            opacity: 0; /* 투명 처리 */
+            transition: opacity 0.3s ease; /* 부드러운 전환 효과 */
+        }
+
+        .rectangle-container:hover .rectangle-overlay {
+            visibility: visible;
+            opacity: 1; /* 오버레이 표시 */
+        }
+
+        .rectangle-bottom {
+            width: 100%;
+            height: 50px;
+            box-sizing: border-box;
+            background-color: #87361a;
+            margin-top: -5px;
+            color: white; /* 글자 색상 흰색 */
+            display: flex;
+            align-items: center;
+            padding-left: 10px; /* 왼쪽 정렬을 위한 여백 */
+            font-size: 1.3rem; /* 텍스트 크기 */
+            font-family: 'pretendard';
+        }
+
+        .rectangle-link {
+        text-decoration: none; /* 밑줄 제거 */
+        color: inherit; /* 텍스트 색상 상속 */
+        display: block; /* 링크를 직사각형 전체로 확장 */
+        }
+
+        .rect-1 {
+            background-image: url("헤키.jpg");
+        }
+        .rect-2 {
+            background-image: url("리애.jpg");
+        }
+        .rect-3 {
+            background-image: url("카츠바이콘반.jpg");
+        }
+        .rect-4 {
+            background-image: url("오제제.jpg");
+        }
+        .rect-5 {
+            background-image: url("일월카츠.jpg");
+        }
+        .rect-6 {
+            background-image: url("카와카츠 오토코.jpg");
+        }
+        .rect-7 {
+            background-image: url("최강금 돈까스.jpg");
+        }
+        .rect-8 {
+            background-image: url("톤쇼우.jpg");
+        }
+        .rect-9 {
+            background-image: url("거북이 금고.jpg");
+        }
+        .rect-10 {
+            background-image: url("수수하지만 굉장해.jpg");
+        }
+        .rect-11 {
+            background-image: url("연돈.jpg");
+        }
+        .rect-12 {
+            background-image: url("보배진.jpg");
+        }
+
+        /* 푸터 스타일 */
+        footer {
+            background-color: #F5EFE1;
+            color: black;
+            text-align: center;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* 최상단 이동 버튼 스타일 */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background-color: #fff;
+            color: black;
+            border: none;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .scroll-to-top.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .scroll-to-top:hover {
+            background-color: #bdbdbd;
+        }
+
+        .scroll-to-top svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* 오른쪽 팝업 원 스타일 */
+        .circle-container {
+            position: fixed;
+            top: 40%; /* 화면의 가운데로 정렬 */
+            right: 20px; /* 오른쪽에서 20px 떨어짐 */
+            transform: translateY(-50%); /* 수직 가운데 정렬 */
+            display: flex;
+            flex-direction: column; /* 세로 배열 */
+            gap: 30px; /* 원 사이의 간격 */
+            z-index: 1002; /* 다른 요소 위에 표시 */
+        }
+
+        .circle {
+            width: 100px;
+            height: 100px;
+            background-color: #87361a;
+            border-radius: 50%; /* 원 형태 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: 'pretendard';
+            font-size: 1.5rem;
+            font-weight: Semibold;
+            cursor: pointer;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
+            transition: transform 0.3s ease, background-color 0.3s ease; /* 호버 효과 */
+        }
+
+        .circle:hover {
+            background-color: #3a1f08; /* 호버 시 배경색 변경 */
+            transform: scale(1.1); /* 호버 시 크기 살짝 확대 */
+        }
+
+        .warning-container {
+            position: fixed;
+            top: 70%; /* 화면의 가운데로 정렬 */
+            right: 20px; /* 오른쪽에서 20px 떨어짐 */
+            transform: translateY(-50%); /* 수직 가운데 정렬 */
+            display: flex;
+            z-index: 1002; /* 다른 요소 위에 표시 */
+        }
+
+        .warning {
+            width: 100px;
+            height: 100px;
+            background-color: #ffffff;
+            border-radius: 50%; /* 원 형태 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #da1d08;
+            font-family: 'pretendard';
+            font-size: 4rem;
+            font-weight: Semibold;
+            cursor: pointer;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3); /* 그림자 효과 */
+            transition: transform 0.3s ease, background-color 0.3s ease; /* 호버 효과 */
+        }
+
+        .warning:hover {
+            background-color: #da1d08;; /* 호버 시 배경색 변경 */
+            transform: scale(1.1); /* 호버 시 크기 살짝 확대 */
+            color: #ffffff;
+        }
+
+        .circle:hover::after {
+        content: attr(data-tooltip); /* 말풍선 내용으로 data-tooltip 속성 값 사용 */
+        position: absolute;
+        top: 50%;
+        right: 110%; /* 원의 왼쪽에 말풍선 배치 */
+        transform: translateY(-50%);
+        background-color: white;
+        color: black;
+        padding: 10px 15px;
+        border-radius: 10px; /* 둥근 모서리 */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        white-space: nowrap; /* 한 줄로 유지 */
+        z-index: 1003; /* 다른 요소 위에 표시 */
+        font-size: 1rem;
+        font-weight: normal;
+        font-family: 'pretendard';
+
+        }
+        .warning:hover::after {
+        content: attr(data-tooltip); /* 말풍선 내용으로 data-tooltip 속성 값 사용 */
+        position: absolute;
+        top: 50%;
+        right: 110%; /* 원의 왼쪽에 말풍선 배치 */
+        transform: translateY(-50%);
+        background-color: white;
+        color: #da1d08;
+        padding: 10px 15px;
+        border-radius: 10px; /* 둥근 모서리 */
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        white-space: nowrap; /* 한 줄로 유지 */
+        z-index: 1003; /* 다른 요소 위에 표시 */
+        font-size: 1rem;
+        font-weight: normal;
+        font-family: 'pretendard';
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- 헤더 -->
+    <header>
+        <img src="logo.png" alt="로고">
+    </header>
+
+    <!-- 메인 섹션 -->
+    <main>
+        <!-- 서울 -->
+        <div class="region">
+            <div class="region-title">서울</div>
+            <div class="rectangles">
+                <div class="rectangle-container">
+                    <a href="https://naver.me/xKQWIN6V" target="_blank" class="rectangle-link">
+                        <div class="rectangle rect-1"></div>
+                        <div class="rectangle-overlay"><콜드 스모킹>으로 인한 훈연향이 특징<br><br>부드러운 안심이 시그니처</div>
+                        <div class="rectangle-bottom">헤키</div>
+                    </a>
+                </div>
+                <div class="rectangle-container">
+                    <a href="https://map.naver.com/p/search/%EB%A6%AC%EC%95%A0?c=15.00,0,0,3,dh" target="_blank" class="rectangle-link">
+                        <div class="rectangle rect-2"></div>
+                        <div class="rectangle-overlay"><드라이 에이징>과<웻 에이징> 숙성이 특징<br><br>다양한 소스와 즐기고 싶으면 추천<br></div>
+                        <div class="rectangle-bottom">리애</div>
+                    </a>
+                </div>
+                <div class="rectangle-container">
+                    <a href="https://naver.me/xWNiF2VD" target="_blank" class="rectangle-link">
+                        <div class="rectangle rect-3"></div>
+                        <div class="rectangle-overlay">등심을 주문하면 특등심이 랜덤으로 제공<br><br>수제 소스가 정말 맛있다</div>
+                        <div class="rectangle-bottom">카츠바이콘반</div>
+                    </a>
+                </div>
+                <div class="rectangle-container">
+                    <a href="https://map.naver.com/p/search/%EC%98%A4%EC%A0%9C%EC%A0%9C?c=15.00,0,0,3,dh" target="_blank" class="rectangle-link">
+                        <div class="rectangle rect-4"></div>
+                        <div class="rectangle-overlay">상큼한 향의 수제 소스로 <br>질리지 않게 먹을 수 있다<br><br>수제 카레 추천!<br></div>
+                        <div class="rectangle-bottom">오제제</div>
+                    </a>
+                </div>
+                <div class="rectangle-container">
+                    <a href="https://map.naver.com/p/search/%EC%9D%BC%EC%9B%94%EC%B9%B4%EC%B8%A0?c=15.00,0,0,3,dh" target="_blank" class="rectangle-link">
+                        <div class="rectangle rect-5"></div>
+                        <div class="rectangle-overlay">두껍지 않은 튀김옷이 특징<br><br>소스는 후반부에 제공해준다</div>
+                        <div class="rectangle-bottom">일월카츠</div>
+                    </a>
+                </div>
+                <div class="rectangle-container">
+                    <a href="https://map.naver.com/p/search/%EC%B9%B4%EC%99%80%EC%B9%B4%EC%B8%A0?c=15.00,0,0,3,dh" target="_blank" class="rectangle-link">
+                        <div class="rectangle rect-6"></div>
+                        <div class="rectangle-overlay">10일 숙성 고기가 특징<br>저온 튀김 2번 + 오븐 1번 = 부드러운 육질<br><br>간 무/유자 폰즈와 함께 먹으면 별미</div>
+                        <div class="rectangle-bottom">카와카츠 오토코</div>
+                    </a>
+                </div>
+                <div class="rectangle-container">
+                    <a href="https://naver.me/Fn2i6WWv" target="_blank" class="rectangle-link">
+                        <div class="rectangle rect-7"></div>
+                        <div class="rectangle-overlay">적당한 육향의 상등심 추천<br><br>드라이 커리가 자꾸 생각나는 집</div>
+                        <div class="rectangle-bottom">최강금돈까스</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 부산 -->
+        <div class="region">
+            <div class="region-title">부산</div>
+            <div class="rectangles">
+                <div class="rectangle-container">
+                    <a href="https://map.naver.com/p/search/%ED%86%A4%EC%87%BC%EC%9A%B0?c=15.00,0,0,3,dh" target="_blank" class="rectangle-link">
+                        <div class="rectangle rect-8"></div>
+                        <div class="rectangle-overlay">저온과 고온에서 2번의 튀김이 특징<br>훈연향이 추가된 메뉴 (버크셔K, 특로스) 강력 추천!<br><br>김치 파우더로 색다른 맛을 경험할 수 있다</div>
+                        <div class="rectangle-bottom">톤쇼우</div>
+                    </a>
+                </div>
+                <div class="rectangle-container">
+                    <a href="https://naver.me/5zJlCYMV" target="_blank" class="rectangle-link">
+                        <div class="rectangle rect-9"></div>
+                        <div class="rectangle-overlay">일식 카츠 + 경양식 소스의 조합!<br>제주도 흑돼지를 사용<br><br>가성비 좋은 돈까스를 원하면 추천</div>
+                        <div class="rectangle-bottom">거북이금고</div>
+                    </a>
+                </div>
+                <div class="rectangle-container">
+                    <a href="https://map.naver.com/p/search/%EC%88%98%EC%88%98%ED%95%98%EC%A7%80%EB%A7%8C%EA%B5%89%EC%9E%A5%ED%95%B4?c=13.00,0,0,3,dh" target="_blank" class="rectangle-link">
+                        <div class="rectangle rect-10"></div>
+                        <div class="rectangle-overlay">소바와 디저트가 함께 제공!<br><br>톤쇼우에 가려진 부산 돈까스 맛집</div>
+                        <div class="rectangle-bottom">수수하지만 굉장해</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 제주 -->
+        <div class="region">
+            <div class="region-title">제주</div>
+            <div class="rectangles">
+                <div class="rectangle-container">
+                    <a href="https://naver.me/5DH3Hg8h" target="_blank" class="rectangle-link">
+                        <div class="rectangle rect-11"></div>
+                        <div class="rectangle-overlay">치즈카츠가 유명<br>바삭한 튀김옷이 특징<br><br>카레는 꼭 추가!</div>
+                        <div class="rectangle-bottom">연돈</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 강원도 -->
+        <div class="region">
+            <div class="region-title">강원도</div>
+            <div class="rectangles">
+                <div class="rectangle-container">
+                    <a href="https://naver.me/5qgK2Fu8" target="_blank" class="rectangle-link">
+                        <div class="rectangle rect-12"></div>
+                        <div class="rectangle-overlay">지방이 살짝 붙어 있는 등심이 특징<br>안심은 옵션이어서 따로 추가해야한다<br><br>튀김옷이 유독 맛있다</div>
+                        <div class="rectangle-bottom">보배진</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 푸터 -->
+    <footer>
+        © KimJunsu. All rights reserved.
+    </footer>
+
+    <!-- 오른쪽 1열 팝업 원 -->
+    <div class="circle-container">
+        <div class="circle" data-tooltip="지방이 적절히 섞여 있어 고소한 맛을 내고 육향이 도드라지는 점이 특징">등심?</div>
+        <div class="circle" data-tooltip="지방이 거의 없어 담백하고 부드러운 육질이 특징">안심?</div>
+        <div class="circle" data-tooltip="지방이 적절히 섞여 있어 고소한 맛을 내고 육향이 도드라지는 점이 특징">특등심?</div>
+    </div>
+
+    <!-- 오른쪽 주의사항 원-->
+    <div class="warning-container">
+        <div class="warning" data-tooltip="고기의 붉은빛은 미오글로빈 함량이 높기 떄문이니 안심하고 드셔도 됩니다.">!</div>
+    </div>
+
+    <!-- 최상단 이동 버튼 -->
+    <button class="scroll-to-top" onclick="scrollToTop()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <script>
+        // 최상단 이동 함수
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth' // 부드럽게 스크롤
+            });
+        }
+
+        // 버튼 가시성 조정
+        const scrollToTopButton = document.querySelector('.scroll-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 200) {
+                scrollToTopButton.classList.add('visible');
+            } else {
+                scrollToTopButton.classList.remove('visible');
+            }
+        });
+    </script>
+</body>
+</html>
